@@ -57,9 +57,9 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //add mouse listener to chess piece
+        // add mouse listener to chess piece
         addMouseListener(this);
-        //add mouse listener motion
+        // add mouse listener motion
         addMouseMotionListener(this);
     }
     @Override
@@ -73,8 +73,6 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
         originX = (getSize().width + 5 - 8*cellside) /2;
         originY = (getSize().height + 5 - 8*cellside) /2;
 
-        
-
         Graphics2D g2 = (Graphics2D)g;
         drawBoard(g2);
         drawPieces(g2);
@@ -87,8 +85,8 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
             g2.drawString(i + 1 + "", originX / 2 - 7, i * cellside + cellside / 2 + originX + 3);
             g2.drawString(i + 1 + "", getSize().width - originX / 2 - 7, i * cellside + cellside / 2 + originX + 3);
         }
-
     }
+
     private void drawPieces(Graphics2D g2) {
         for(int row = 0; row < 8; row++) {
             for (int col = 0; col <8; col++) {
@@ -98,7 +96,7 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
                 }
             }
         }
-        //set moving piece with image on mouse
+        // set moving piece with image on mouse
         if (movingPiece != null && movingPiecePoint != null) {
             Image img = keyNameValueImage.get(movingPiece.imgName);
             g2.drawImage(img,movingPiecePoint.x - cellside/2,movingPiecePoint.y- cellside/2, cellside, cellside, null);
