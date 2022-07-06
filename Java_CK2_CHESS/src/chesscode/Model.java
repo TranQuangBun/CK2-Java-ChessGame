@@ -1,7 +1,6 @@
 package chesscode;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 public class Model {
@@ -11,7 +10,7 @@ public class Model {
     public void reset() {
         piecesBox.removeAll(piecesBox);
 
-        for (int i = 0; i <2; i++) {
+        for (int i = 0; i < 2; i++) {
             piecesBox.add(new PieceChess(0 + i * 7, 7, Player.BLACK, Name.ROOK,"rook-black"));
             piecesBox.add(new PieceChess(0 + i * 7, 0, Player.WHITE, Name.ROOK,"rook-white"));
 
@@ -58,7 +57,7 @@ public class Model {
         player1Turn = player1Turn == Player.WHITE ? Player.BLACK : Player.WHITE;
 
     }
-    //set vi tri chess
+    // set vi tri chess
     public PieceChess pieceAt(int col, int row) {
         for (PieceChess chesspiece : piecesBox) {
             if (chesspiece.col == col && chesspiece.row == row) {

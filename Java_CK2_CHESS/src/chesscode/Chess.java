@@ -1,7 +1,6 @@
 package chesscode;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.sql.ClientInfoStatus;
 import java.util.Scanner;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;

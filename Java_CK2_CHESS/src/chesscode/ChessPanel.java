@@ -11,11 +11,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.print.DocFlavor.URL;
 import javax.swing.JPanel;
 
 public class ChessPanel extends JPanel implements MouseListener, MouseMotionListener {
