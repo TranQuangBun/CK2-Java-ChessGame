@@ -137,7 +137,6 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
     public void mouseClicked(MouseEvent e) {
     }
 
-
     //move piece mouse listener
     @Override
     public void mousePressed(MouseEvent e) {
@@ -155,7 +154,6 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
         if (fromCol != col || fromRow != row ) {
             chessitf.movePiece(fromCol, fromRow, col, row);
         }
-
 //moving piece img (bóng của ảnh)
         movingPiece = null;
         movingPiecePoint = null;

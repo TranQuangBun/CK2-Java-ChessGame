@@ -42,7 +42,7 @@ public class Chess implements Chessitf, ActionListener {
         chessModel.reset();
 
         frame = new JFrame("Cờ vua");
-        frame.setSize(500, 540);
+        frame.setSize(750, 790);
         frame.setLocationRelativeTo(null);
 
         panel = new ChessPanel(this);
@@ -134,7 +134,7 @@ public class Chess implements Chessitf, ActionListener {
         }
     }
 
-    //chuyển dữ liệu for connect btn
+//chuyển dữ liệu for connect btn
     private void runSocketServer() {
         var pool = Executors.newFixedThreadPool(1);
         pool.execute(new Runnable() {
