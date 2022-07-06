@@ -1,6 +1,7 @@
 package chesscode;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -63,19 +64,29 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
     }
     @Override
     protected void paintChildren(Graphics g) {
-        // TODO Auto-generated method stub
 
         super.paintChildren(g);
 
         //reponsive model
-        int smaller = Math.min(getSize().width, getSize().height);
+        int smaller = Math.min(getSize().width - 90, getSize().height - 100);
         cellside = smaller/8;
-        originX = (getSize().width - 8*cellside) /2;
-        originY = (getSize().height - 8*cellside) /2;
+        originX = (getSize().width + 5 - 8*cellside) /2;
+        originY = (getSize().height + 5 - 8*cellside) /2;
+
+        
 
         Graphics2D g2 = (Graphics2D)g;
         drawBoard(g2);
         drawPieces(g2);
+        g2.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        g2.setColor(Color.black);
+        for (int i = 0; i < 8; i++) {
+            g2.drawString(((char) (i + 65)) + "", i * cellside + cellside / 2 + originY + 4, originY / 2 + 10);
+            g2.drawString(((char) (i + 65)) + "", i * cellside + cellside / 2 + originY + 4,
+                getSize().height - originY / 2 + 10);
+            g2.drawString(i + 1 + "", originX / 2 - 7, i * cellside + cellside / 2 + originX + 3);
+            g2.drawString(i + 1 + "", getSize().width - originX / 2 - 7, i * cellside + cellside / 2 + originX + 3);
+        }
 
     }
     private void drawPieces(Graphics2D g2) {
@@ -106,9 +117,7 @@ public class ChessPanel extends JPanel implements MouseListener, MouseMotionList
         } else {
             File imgfile = new	File(url.toURI( ));
             return ImageIO.read(imgfile);
-
         }
-
     }
 
     private void drawBoard(Graphics2D g2) {
