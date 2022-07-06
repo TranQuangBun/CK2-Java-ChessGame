@@ -33,7 +33,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         chessModel.reset();
 
         var frame = new JFrame("Chess");
-        frame.setSize(600,600);
+        frame.setSize(750,750);
         frame.setLocationRelativeTo(null);
 
         panel = new ChessPanel(this);
@@ -85,7 +85,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         // TODO Auto-generated method stub
         chessModel.movePiece(fromCol, fromRow, toCol, toRow);
         panel.repaint();;
-//priwriter fix move
+        // priwriter fix move
         if(printWriter != null) {
             printWriter.println(fromCol + "," +fromRow + "," +toCol + "," +toRow);
         }
@@ -95,7 +95,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         //gui du lieu qua server
         while(scanner.hasNextLine()){
             var moveStr = scanner.nextLine();
-            System.out.println("from server: "+moveStr);
+            System.out.println("From server: "+moveStr);
             var moveStrArr = moveStr.split(",");
             var fromCol = Integer.parseInt(moveStrArr[0]);
             var fromRow = Integer.parseInt(moveStrArr[1]);
@@ -104,7 +104,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
-//gui thong tin server for client
+                // gui thong tin server for client
                 public void run() {
                     chessModel.movePiece(fromCol, fromRow, toCol, toRow);
                     panel.repaint();
@@ -126,7 +126,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         }
         else
         if(e.getSource() == listenbtn){
-            System.out.println("listen clicked");
+            System.out.println("Listen clicked");
             try {
                 if (scanner == null || printWriter == null) {
                     var socket = new Socket("localhost", 9999);
@@ -149,8 +149,9 @@ public class Chess implements Chessitf, ActionListener, Runnable{
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        try(var sever = new ServerSocket(9999)){
-            System.out.println("server is listening to port 9999");
+        int port = 9999;
+        try(var sever = new ServerSocket(port)){
+            System.out.println("Server is listening to port " + port);
 
             if (scanner == null || printWriter == null) {
                 var socket = sever.accept();
