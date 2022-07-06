@@ -41,7 +41,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         chessModel.reset();
 
         frame = new JFrame("Cờ vua");
-        frame.setSize(500,540);
+        frame.setSize(750,790);
         frame.setLocationRelativeTo(null);
 
         panel = new ChessPanel(this);
@@ -51,7 +51,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         frame.add(panel, BorderLayout.CENTER);
         var buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-//btn connect
+//btn reset
         resetbtn = new JButton("Bắt đầu lại");
         buttonPanel.add(resetbtn);
         resetbtn.addActionListener(this);
