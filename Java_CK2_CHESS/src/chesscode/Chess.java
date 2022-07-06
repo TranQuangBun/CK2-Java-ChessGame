@@ -37,7 +37,6 @@ public class Chess implements Chessitf, ActionListener {
     private Socket socket;
     private PrintWriter printWriter;
 
-
     Chess() {
         chessModel.reset();
 
@@ -47,21 +46,21 @@ public class Chess implements Chessitf, ActionListener {
 
         panel = new ChessPanel(this);
 
-// layout for connect socket
+        // layout for connect socket
         frame.setLayout(new BorderLayout());
         frame.add(panel, BorderLayout.CENTER);
         var buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-// btn reset
+        // btn reset
         resetbtn = new JButton("Bắt đầu lại");
         buttonPanel.add(resetbtn);
         resetbtn.addActionListener(this);
-// btn connect
+        // btn connect
         connectbtn = new JButton("Bắt đầu chơi");
         buttonPanel.add(connectbtn);
         connectbtn.addActionListener(this);
 
-// btn listen
+        // btn listen
         listenbtn = new JButton("Kết nối");
         buttonPanel.add(listenbtn);
         listenbtn.addActionListener(this);
@@ -71,14 +70,14 @@ public class Chess implements Chessitf, ActionListener {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-// close socket after close window
+        // close socket after close window
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
                 printWriter.close();
 
                 try {
-                    if(server != null) {
+                    if (server != null) {
                         server.close();
                     }
                     if (socket != null) {
@@ -106,7 +105,7 @@ public class Chess implements Chessitf, ActionListener {
         chessModel.movePiece(fromCol, fromRow, toCol, toRow);
         panel.repaint();
         ;
-// priwriter fix move
+        // priwriter fix move
         if (printWriter != null) {
             printWriter.println(fromCol + "," + fromRow + "," + toCol + "," + toRow);
         }
@@ -125,7 +124,7 @@ public class Chess implements Chessitf, ActionListener {
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
-// gui thong tin server for client
+                // gui thong tin server for client
                 public void run() {
                     chessModel.movePiece(fromCol, fromRow, toCol, toRow);
                     panel.repaint();
@@ -134,7 +133,7 @@ public class Chess implements Chessitf, ActionListener {
         }
     }
 
-//chuyển dữ liệu for connect btn
+    // chuyển dữ liệu for connect btn
     private void runSocketServer() {
         var pool = Executors.newFixedThreadPool(1);
         pool.execute(new Runnable() {
@@ -157,7 +156,8 @@ public class Chess implements Chessitf, ActionListener {
             }
         });
     }
-    //chuyển dữ liệu for listen btn
+
+    // chuyển dữ liệu for listen btn
     private void runSocketClient() {
         try {
             socket = new Socket(SOCKET_SERVER, PORT);
@@ -175,6 +175,7 @@ public class Chess implements Chessitf, ActionListener {
             e1.printStackTrace();
         }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
@@ -182,7 +183,7 @@ public class Chess implements Chessitf, ActionListener {
             chessModel.reset();
             panel.repaint();
             try {
-                if(server != null) {
+                if (server != null) {
                     server.close();
                 }
                 if (socket != null) {
@@ -190,7 +191,7 @@ public class Chess implements Chessitf, ActionListener {
                 }
                 connectbtn.setEnabled(true);
                 listenbtn.setEnabled(true);
-            } catch(IOException e1) {
+            } catch (IOException e1) {
                 e1.printStackTrace();
             }
 
@@ -213,5 +214,3 @@ public class Chess implements Chessitf, ActionListener {
         }
     }
 }
-
-
