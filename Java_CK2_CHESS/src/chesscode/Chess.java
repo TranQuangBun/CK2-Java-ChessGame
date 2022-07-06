@@ -12,28 +12,36 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.sql.ClientInfoStatus;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class Chess implements Chessitf, ActionListener, Runnable{
+
+    private JFrame frame;
     private Model chessModel = new Model();
     private ChessPanel panel;
     private JButton resetbtn;
     private JButton connectbtn;
     private JButton listenbtn;
+
+    private Socket socket;
     private PrintWriter printWriter;
     private Scanner scanner;
+
+
     Chess(){
         chessModel.reset();
 
-        var frame = new JFrame("Chess");
-        frame.setSize(750,750);
+        frame = new JFrame("Cờ vua");
+        frame.setSize(500,540);
         frame.setLocationRelativeTo(null);
 
         panel = new ChessPanel(this);
@@ -44,16 +52,16 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         var buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 //btn connect
-        resetbtn = new JButton("Reset");
+        resetbtn = new JButton("Bắt đầu lại");
         buttonPanel.add(resetbtn);
         resetbtn.addActionListener(this);
 //btn connect
-        connectbtn = new JButton("Connect");
+        connectbtn = new JButton("Bắt đầu chơi");
         buttonPanel.add(connectbtn);
         connectbtn.addActionListener(this);
 
 //btn listen
-        listenbtn = new JButton("Listen");
+        listenbtn = new JButton("Kết nối");
         buttonPanel.add(listenbtn);
         listenbtn.addActionListener(this);
         frame.add(buttonPanel, BorderLayout.PAGE_END);
@@ -67,6 +75,11 @@ public class Chess implements Chessitf, ActionListener, Runnable{
                 super.windowClosing(e);
                 printWriter.close();
                 scanner.close();
+                try {
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
     }
@@ -85,7 +98,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         // TODO Auto-generated method stub
         chessModel.movePiece(fromCol, fromRow, toCol, toRow);
         panel.repaint();;
-        // priwriter fix move
+//priwriter fix move
         if(printWriter != null) {
             printWriter.println(fromCol + "," +fromRow + "," +toCol + "," +toRow);
         }
@@ -95,7 +108,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         //gui du lieu qua server
         while(scanner.hasNextLine()){
             var moveStr = scanner.nextLine();
-            System.out.println("From server: "+moveStr);
+            System.out.println("Nuoc vua di: "+moveStr);
             var moveStrArr = moveStr.split(",");
             var fromCol = Integer.parseInt(moveStrArr[0]);
             var fromRow = Integer.parseInt(moveStrArr[1]);
@@ -104,7 +117,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
 
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
-                // gui thong tin server for client
+//gui thong tin server for client
                 public void run() {
                     chessModel.movePiece(fromCol, fromRow, toCol, toRow);
                     panel.repaint();
@@ -112,6 +125,7 @@ public class Chess implements Chessitf, ActionListener, Runnable{
             });
         }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
@@ -121,18 +135,23 @@ public class Chess implements Chessitf, ActionListener, Runnable{
         }
         else
         if(e.getSource() == connectbtn){
+            frame.setTitle("Người chơi 1");
             var pool = Executors.newFixedThreadPool(1);
             pool.execute(this);
+            connectbtn.setEnabled(false);
+            listenbtn.setEnabled(false);
+            JOptionPane.showMessageDialog(frame, "Đang kết nối tới cổng chơi");
         }
         else
         if(e.getSource() == listenbtn){
-            System.out.println("Listen clicked");
+            listenbtn.setEnabled(false);
+            connectbtn.setEnabled(false);
+            frame.setTitle("Người chơi 2");
             try {
-                if (scanner == null || printWriter == null) {
-                    var socket = new Socket("localhost", 9999);
-                    scanner = new Scanner(socket.getInputStream());
-                    printWriter = new PrintWriter(socket.getOutputStream(), true);
-                }
+                socket = new Socket("localhost", 9999);
+                scanner = new Scanner(socket.getInputStream());
+                printWriter = new PrintWriter(socket.getOutputStream(), true);
+                JOptionPane.showMessageDialog(frame, "Đã kết nối tới cổng chơi");
                 Executors.newFixedThreadPool(1).execute(new Runnable() {
                     @Override
                     public void run() {
@@ -149,15 +168,12 @@ public class Chess implements Chessitf, ActionListener, Runnable{
     @Override
     public void run() {
         // TODO Auto-generated method stub
-        int port = 9999;
-        try(var sever = new ServerSocket(port)){
-            System.out.println("Server is listening to port " + port);
+        try(var sever = new ServerSocket(9999)){
+            System.out.println("server is listening to port 9999");
+            socket = sever.accept();
+            printWriter = new PrintWriter(socket.getOutputStream(), true);
+            scanner = new Scanner(socket.getInputStream());
 
-            if (scanner == null || printWriter == null) {
-                var socket = sever.accept();
-                printWriter = new PrintWriter(socket.getOutputStream(), true);
-                scanner = new Scanner(socket.getInputStream());
-            }
             receiveMove();
         } catch (IOException e1) {
             e1.printStackTrace();
